@@ -4,6 +4,11 @@ let users=[]
 const form= document.getElementById("userForm")
 const tableBody = document.getElementById("tableBody")
 const editIndexInput = document.getElementById("editIndex")
+
+if(sessionStorage.getItem("users")){
+    users= JSON.parse(sessionStorage.getItem("users"))
+    displayUsers()
+}
 //add entry to users
 form.addEventListener("submit",(e)=>{
     e.preventDefault()
@@ -19,13 +24,14 @@ form.addEventListener("submit",(e)=>{
     }
 
     form.reset()
-    console.log(users);
+    // console.log(users);
+    sessionStorage.setItem("users",JSON.stringify(users))
     displayUsers()
 
 })
 
 // users should listed in table - READ
-const displayUsers=()=>{
+function displayUsers(){
     tableBody.innerHTML=""
     users.forEach((user, index)=>{
         tableBody.innerHTML+=`
@@ -56,6 +62,8 @@ const editUser=(index)=>{
 const deleteUser=(index)=>{
     if(confirm("Are You Sure, want to delete data?")){
         users.splice(index,1)
+        // update users to session storage
+        sessionStorage.setItem("users",JSON.stringify(users))
         displayUsers()
     }
 }
